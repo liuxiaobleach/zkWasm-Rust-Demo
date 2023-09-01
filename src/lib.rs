@@ -40,31 +40,49 @@ pub fn rlp_list(data: Vec<u8>) -> i64 {
     0
 }
 
-pub fn decodeLength(len: &[u8]) -> u8 {
-    // let hex: String;
-    // for i in len.iter() {
-    //     println!("hex: {:?} ", i);  
-    // }
-    86
+pub enum DataType {
+    STRING,
+    LIST
 }
 
-enum Cell {
-    u(u8),
-    au([u8]),
+pub fn decode_length(input: &[u8]) -> Result<(usize, usize, DataType), &str> {
+    let length = input.len();
+    if length == 0 {
+        Err("input is null")
+    } else {
+        let prefix = usize::from( input[0]);
+        if prefix <= 0x7f {
+            Ok((0, 1, DataType::STRING))
+        } else if prefix <= 0xb7 && length > (prefix - 0x80) {
+            Ok((0, prefix - 0x80, DataType::STRING))
+        } else {
+            Err("input does not conform to RLP encoding form")
+        }
+    }
 }
 
-pub fn _decode(input: &[u8]) -> (&[u8], &[u8]) {
+pub fn to_integer(b: &[u8]) -> Result<usize, &str> {
+    let length = b.len();
+    if length == 0 {
+        decode
+
+        Err("input is null")
+    } else if length == 1 {
+        Ok(usize::from(b[0]))
+    } else {
+        Ok(usize::from(b[length-1]) + to_integer(&b[0..length-1]).unwrap() * 256)
+    }
+}
+
+/*pub fn _decode(input: &[u8]) -> ([u8], &[u8]) {
     let mut len: u8;
     let mut llen: u8;
-    let mut res: &[u8];
-    let mut remainder: &[u8];
     let mut d: (&[u8], &[u8]);
-    let mut decoded: Vec<Cell>;
+    let mut decoded: Vec<[u8]>;
     let mut pre_byte: u8 = input[0];
 
     if pre_byte <= 0x7f { // <= 127 single byte
-        // let res: String = rlp::decode(&input).unwrap();
-        res = &input[0..1];
+        res = input[0..1];
         remainder = &input[1..];
         ( res, remainder )  
     } else if pre_byte <= 0xb7 { 
@@ -85,7 +103,7 @@ pub fn _decode(input: &[u8]) -> (&[u8], &[u8]) {
         len = pre_byte - 0xc0; // -192 
         while remainder.len() > 0 {
            let (d_res, d_remainder) = _decode(remainder);
-           decoded.push(d_res);
+            Vec::push(&mut decoded, d_res);
            remainder = d_remainder;
         }
         (decoded, &input[len as usize..])
@@ -104,7 +122,7 @@ pub fn _decode(input: &[u8]) -> (&[u8], &[u8]) {
 
         (decoded, &input[total_len as usize..])
     }
-}
+}*/
 
 #[cfg(test)]
 mod tests {
@@ -112,7 +130,7 @@ mod tests {
 
     #[test]
     fn test_rlp() {
-        let data = vec![184, 86, 84, 104, 101, 32, 108, 101, 110, 103, 116, 104, 32, 111, 102, 32, 116, 104, 105, 115, 32, 115, 101, 110, 116, 101, 110, 99, 101, 32, 105, 115, 32, 109, 111, 114, 101, 32, 116, 104, 97, 110, 32, 53, 53, 32, 98, 121, 116, 101, 115, 44, 32, 73, 32, 107, 110, 111, 119, 32, 105, 116, 32, 98, 101, 99, 97, 117, 115, 101, 32, 73, 32, 112, 114, 101, 45, 100, 101, 115, 105, 103, 110, 101, 100, 32, 105, 116];
+        //let data = vec![184, 86, 84, 104, 101, 32, 108, 101, 110, 103, 116, 104, 32, 111, 102, 32, 116, 104, 105, 115, 32, 115, 101, 110, 116, 101, 110, 99, 101, 32, 105, 115, 32, 109, 111, 114, 101, 32, 116, 104, 97, 110, 32, 53, 53, 32, 98, 121, 116, 101, 115, 44, 32, 73, 32, 107, 110, 111, 119, 32, 105, 116, 32, 98, 101, 99, 97, 117, 115, 101, 32, 73, 32, 112, 114, 101, 45, 100, 101, 115, 105, 103, 110, 101, 100, 32, 105, 116];
         // let data = vec![185, 4, 0, 97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,
         // 97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,
         // 97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,97, 97, 97, 97,
@@ -129,8 +147,8 @@ mod tests {
         // rlp_list(data);
         // let data = vec![0xc3, 0x82,0x53,0x51];
         // let data: Vec<u8> = vec![200, 131, 97, 98, 99, 131, 100, 101, 102];
-        let (res, remainder) = _decode(&data);
-        println!("kkkkkk: {:?}", res);
+        //let (res, remainder) = _decode(&data);
+        //println!("kkkkkk: {:?}", res);
     }
 }
 
