@@ -2742,6 +2742,7 @@ dependencies = [
  "bytes",
  "getrandom",
  "quote 1.0.33",
+ "rand",
  "reth-primitives",
  "rlp",
  "wasm-bindgen",
