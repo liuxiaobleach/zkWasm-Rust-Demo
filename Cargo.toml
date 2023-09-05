@@ -11,3 +11,9 @@ crate-type = ["cdylib"]
 [dependencies]
 rlp = { version = "0.5.2", default-features = false }
 wasm-bindgen = "0.2.83"
+reth-primitives = { git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alpha.8", features = [
+    "arbitrary",
+    "test-utils",
+]}
+bytes = "1.4.0"
+quote = "1.0.33"
