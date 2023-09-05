@@ -16,6 +16,3 @@ reth-primitives = {git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alph
 bytes = "1.4.0"
 quote = "1.0.33"
 
-[features]
-default = []
-std = ["reth-primitives/std"]
