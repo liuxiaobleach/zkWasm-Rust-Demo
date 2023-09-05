@@ -9,13 +9,13 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-rand = "0.8.5"
 getrandom = { version = "0.2", features = ["js"] }
 rlp = { version = "0.5.2", default-features = false }
 wasm-bindgen = "0.2.83"
-reth-primitives = {git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alpha.8", features = [
-    "arbitrary",
-    "test-utils",
-]}
+reth-primitives = {git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alpha.8", default-features = false }
 bytes = "1.4.0"
 quote = "1.0.33"
+
+[features]
+default = []
+std = ["reth-primitives/std"]
