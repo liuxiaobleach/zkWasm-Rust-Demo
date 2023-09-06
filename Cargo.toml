@@ -21,6 +21,3 @@ reth-rlp = { git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alpha.8", 
     "smol_str",
 ]}
 quote = "1.0.33"
-c-kzg = { version = "0.1.0", default-features = false }
-clang = { version = "2.0.0", default-features = false }
-clang-sys = { version = "1.6.1", default-features = false }
