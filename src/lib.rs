@@ -1,5 +1,5 @@
-use reth_rlp::Decodable;
 use wasm_bindgen::prelude::*;
+use reth_rlp::Decodable;
 use reth_rlp::RlpEncodable;
 use reth_rlp::RlpDecodable;
 use bytes::Bytes;
@@ -22,7 +22,14 @@ struct Log {
 
 #[wasm_bindgen]
 pub fn zkmain() -> i64 {
-    reth_rlp()
+    rlp()
+}
+
+pub fn rlp() -> i64 {
+    let data = vec![0x83, b'c', b'a', b't'];
+    let _animal: String = rlp::decode(&data).unwrap();
+    assert_eq!(_animal, "cat".to_owned());
+    0
 }
 
 
