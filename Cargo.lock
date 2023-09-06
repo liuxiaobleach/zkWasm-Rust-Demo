@@ -1585,6 +1585,7 @@ dependencies = [
  "bytes",
  "c-kzg 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "clang",
+ "clang-sys",
  "getrandom",
  "quote",
  "reth-rlp",
