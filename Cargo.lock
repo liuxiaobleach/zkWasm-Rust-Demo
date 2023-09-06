@@ -280,6 +280,21 @@ dependencies = [
 [[package]]
 name = "c-kzg"
 version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "31f0713e909403fdfe705fe1c2d2880012cd46133fb61664fadd2cc5d7e53a7c"
+dependencies = [
+ "bindgen",
+ "blst",
+ "cc",
+ "glob",
+ "hex",
+ "libc",
+ "serde",
+]
+
+[[package]]
+name = "c-kzg"
+version = "0.1.0"
 source = "git+https://github.com/ethereum/c-kzg-4844#f5f6f863d475847876a2bd5ee252058d37c3a15d"
 dependencies = [
  "bindgen",
@@ -1003,7 +1018,7 @@ dependencies = [
  "arrayvec",
  "auto_impl",
  "bytes",
- "c-kzg",
+ "c-kzg 0.1.0 (git+https://github.com/ethereum/c-kzg-4844)",
  "ethereum-types",
  "ethnum",
  "reth-rlp-derive",
@@ -1558,6 +1573,7 @@ name = "zkwasm-rlp"
 version = "0.1.0"
 dependencies = [
  "bytes",
+ "c-kzg 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "getrandom",
  "quote",
  "reth-rlp",
