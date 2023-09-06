@@ -21,3 +21,4 @@ reth-rlp = { git = "https://github.com/paradigmxyz/reth", rev="v0.1.0-alpha.8", 
     "smol_str",
 ]}
 quote = "1.0.33"
+c-kzg = "0.1.0"
