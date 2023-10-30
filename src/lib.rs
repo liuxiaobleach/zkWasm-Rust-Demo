@@ -2,6 +2,11 @@ use wasm_bindgen::prelude::*;
 use alloy_rlp::Decodable;
 use alloy_rlp_derive::{RlpDecodable, RlpEncodable};
 use bytes::Bytes;
+use mimc_rs::{Fr, Mimc7};
+
+#[macro_use]
+extern crate ff;
+use ff::*;
 
 #[derive(Debug, PartialEq, RlpEncodable, RlpDecodable)]
 struct Dec {
@@ -22,7 +27,8 @@ struct Log {
 
 #[wasm_bindgen]
 pub fn zkmain() -> i64 {
-    rlp()
+    //rlp()
+    mimc_hash()
 }
 
 pub fn rlp() -> i64 {
@@ -101,12 +107,32 @@ pub fn reth_rlp() -> i64 {
     0
 }
 
+pub fn mimc_hash() -> i64 {
+    println!("test mimc");
+    let b1: Fr = Fr::from_str("1").unwrap();
+    let b2: Fr = Fr::from_str("2").unwrap();
+    let mimc7 = Mimc7::new(91);
+    let h1 = mimc7.hash(&b1, &b2);
+    assert_eq!(
+        h1.to_string(),
+        "Fr(0x176c6eefc3fdf8d6136002d8e6f7a885bbd1c4e3957b93ddc1ec3ae7859f1a08)"
+    );
+    0
+}
+
 #[cfg(test)]
 mod tests {
     use crate::reth_rlp;
+    use crate::mimc_hash;
 
     #[test]
     fn test_rlp() {
         reth_rlp();
     }
+
+    #[test]
+    fn test_mimc() {
+        mimc_hash();
+    }
+
 }
