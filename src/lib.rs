@@ -22,7 +22,7 @@ struct Log {
 
 #[wasm_bindgen]
 pub fn zkmain() -> i64 {
-    rlp()
+    reth_rlp()
 }
 
 pub fn rlp() -> i64 {
